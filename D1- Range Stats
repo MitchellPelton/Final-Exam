@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+
+// The purpose of this program is to take integers from the user until 0 is entered.
+// Then display the amount of numbers entered, the sum of those numbers, the max and min of those numbers, and the average of those numbers.
+
+int main()
+{
+    int num, count = 0, sum = 0, min = 0, max = 0;
+    float average = 0.0f;
+	cout << "Enter an Integer (0 to stop): ";
+	cin >> num;
+	if (num == 0) {
+		cout << "You entered 0, try again with a different Integer to start" << endl;
+		return 0;
+	}
+	while (num != 0) {
+		count++;
+		sum += num;
+		if (num < min || count == 1) {
+			min = num;
+		}
+		if (num > max || count == 1) {
+			max = num;
+		}
+		cout << "Enter an Integer (0 to stop): ";
+		cin >> num;
+	}
+	cout << "Count: " << count << endl;
+	cout << "Sum: " << sum << endl;
+	cout << "Minimum: " << min << endl;
+	cout << "Maximum: " << max << endl;
+    average = float(sum) / count;
+    cout << "Average: " << average << endl;
+	return 0;
+
+}
