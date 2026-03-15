@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+// The purpose of this code is to ask the user for the number of elements, put those elements in an array,
+// then calculate the average of those elements, and which indices of the array are equal to that average and which indices are greater than that average.
+
+int main()
+{
+	int n, sum = 0, avg, count = 0;
+	cout << "Enter the number of elements: ";
+	cin >> n;
+	int arr[100];
+	cout << "Enter the elements: ";
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+		sum += arr[i];
+	}
+	avg = sum / n;
+	cout << "Average: " << avg << endl;
+	cout << "Indices where element is equal to average: ";
+	for (int i = 0; i < n; i++) {
+		if (arr[i] == avg) {
+			cout << i << " ";
+		}
+		if (arr[i] > avg) {
+			count++;
+		}
+	}
+	cout << endl << "Number of elements greater than average: " << count << endl;
+	return 0;
+
+}
