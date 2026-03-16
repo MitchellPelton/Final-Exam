@@ -1,0 +1,149 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <cctype>
+using namespace std;
+
+
+
+int main()
+{
+	int numStudents;
+	cout << "Enter the number of students (1-30): ";
+	cin >> numStudents;
+	while (numStudents < 1 || numStudents > 30) {
+		cout << "Invalid number of students. Please enter a number between 1 and 30: ";
+		cin >> numStudents;
+	}
+	string names[30];
+	double exam1[30], exam2[30], finalExam[30], averages[30];
+	for (int i = 0; i < numStudents; i++) {
+		cout << "Enter full name for student " << (i + 1) << ": ";
+		cin.ignore();// I could not get this to work without the cin.ignore(). It kept jumping to the next line without allowing me to input the name.
+		getline(cin, names[i]);
+		
+		// The purpose of this section is to enter the names and scores for each student, and to calculate the average.
+		cout << "Enter Exam 1 score for " << names[i] << ": ";
+		cin >> exam1[i];
+		cout << "Enter Exam 2 score for " << names[i] << ": ";
+		cin >> exam2[i];
+		cout << "Enter Final Exam score for " << names[i] << ": ";
+		cin >> finalExam[i];
+		averages[i] = 0.3 * exam1[i] + 0.3 * exam2[i] + 0.4 * finalExam[i];
+	}
+
+	// The purpose of this section is to assign letter grades based on the average score, and to print the results for each student.
+	char A, B, C, D, F;
+	for (int i = 0; i < numStudents; i++) {
+		if (averages[i] >= 90) {
+			cout << names[i] << " - Average: " << averages[i] << " - Grade: A" << endl;
+		}
+		else if (averages[i] >= 80) {
+			cout << names[i] << " - Average: " << averages[i] << " - Grade: B" << endl;
+		}
+		else if (averages[i] >= 70) {
+			cout << names[i] << " - Average: " << averages[i] << " - Grade: C" << endl;
+		}
+		else if (averages[i] >= 60) {
+			cout << names[i] << " - Average: " << averages[i] << " - Grade: D" << endl;
+		}
+		else {
+			cout << names[i] << " - Average: " << averages[i] << " - Grade: F" << endl;
+		}
+	}
+	// The purpose of this section is to calculate and print the class average, minimum, and maximum.
+	double classaverage = 0.0;
+	for (int i = 0; i < numStudents; i++) {
+		classaverage += averages[i];
+	}
+	if (numStudents > 0) {
+		classaverage /= numStudents;
+	}
+	cout << "Class average: " << classaverage << endl;
+	int classmin = averages[0];
+	for (int i = 1; i < numStudents; i++) {
+		if (averages[i] < classmin) {
+			classmin = averages[i];
+		
+		}
+	}
+	cout << "Class minimum: " << classmin << endl;
+	int classmax = averages[0];
+	for (int i = 1; i < numStudents; i++) {
+		if (averages[i] > classmax) {
+			classmax = averages[i];
+		}
+	}
+	cout << "Class maximum: " << classmax << endl;
+	// The purpose of this section is to allow the user to search for a student by name and print their record. case  insensitive
+	string searchName;
+	cout << "Enter a name to search for: ";
+	
+	cin.ignore();
+	getline(cin, searchName);
+
+	// The purpose of this section is to convert the search name and the names in the array to lowercase for case-insensitive comparison.
+	// I was not sure how to create a case-insensitive search function, I found 1 from https://www.geeksforgeeks.org/cpp/case-insensitive-string-comparison-in-cpp/.
+
+	auto toLowerCopy = [](const string& s) {
+		string r = s;
+		for (char &ch : r) ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+		return r;
+	};
+	// This is the search function that is used to search for the student by name.
+	string searchLower = toLowerCopy(searchName);
+	bool found = false;
+	for (int i = 0; i < numStudents; i++) {
+		if (toLowerCopy(names[i]) == searchLower) {
+			cout << names[i] << " - Average: " << averages[i] << " - Grade: ";
+			if (averages[i] >= 90) {
+				cout << "A" << endl;
+			}
+			else if (averages[i] >= 80) {
+				cout << "B" << endl;
+			}
+			else if (averages[i] >= 70) {
+				cout << "C" << endl;
+			}
+			else if (averages[i] >= 60) {
+				cout << "D" << endl;
+			}
+			else {
+				cout << "F" << endl;
+			}
+			found = true;
+			break;
+		}
+	}
+	if (!found) {
+		cout << "Student not found." << endl;
+	}
+	// The purpose of this section is to export the results to a text file
+	ofstream ofs("C:/Users/mitch/source/repos/ConsoleApplication6/Output.txt");
+	if (ofs.is_open()) {
+		ofs << "Name, Average, Grade" << endl;
+		for (int i = 0; i < numStudents; i++) {
+			ofs << names[i] << ", " << averages[i] << ", ";
+			if (averages[i] >= 90) {
+				ofs << "A" << endl;
+			}
+			else if (averages[i] >= 80) {
+				ofs << "B" << endl;
+			}
+			else if (averages[i] >= 70) {
+				ofs << "C" << endl;
+			}
+			else if (averages[i] >= 60) {
+				ofs << "D" << endl;
+			}
+			else {
+				ofs << "F" << endl;
+			}
+		}
+		ofs.close();
+		cout << "Results exported to output.txt" << endl;
+	}
+	else {
+		cout << "Unable to open file for writing." << endl;
+	}
+}
