@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// The purpose of this code is to take a sentence from the user and count the vowels, words, and identify and print the longest word.
+
+int main()
+{ string line;
+	cout << "Enter a line of text: ";
+	getline(cin, line);
+	int vCount = 0;
+	int wCount = 0;
+	string longestWord;
+	string currentWord;
+	for (size_t i = 0; i < line.length(); ++i) {
+		char v = tolower(line[i]);
+		if (v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u') {
+			vCount++;
+		}
+		if (line[i] == ' ' || i == line.length() - 1) {
+			if (!currentWord.empty()) {
+				wCount++;
+				if (currentWord.length() > longestWord.length()) {
+					longestWord = currentWord;
+				}
+				currentWord.clear();
+			}
+		} else {
+			currentWord += line[i];
+		}
+	}
+	cout << "Number of vowels: " << vCount << endl;
+	cout << "Number of words: " << wCount << endl;
+	cout << "Longest word: " << longestWord << endl;
+	return 0;
+	
+
+}
